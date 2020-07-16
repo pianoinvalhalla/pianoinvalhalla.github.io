@@ -4,7 +4,8 @@
 
 # converts gabc to lilypond
 
-require 'grely'
+#require 'grely'
+require_relative '../lib/lygre'
 
 def grely(rf)
   input = rf.read

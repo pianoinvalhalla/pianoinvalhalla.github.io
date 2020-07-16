@@ -1,6 +1,8 @@
 # Treetop grammar for gabc (input format of Gregorio).
 # Compiled by Treetop emits GabcParser class.
 
+# REVISION 6
+
 grammar Gabc
 
   rule score
@@ -113,6 +115,7 @@ grammar Gabc
   # this rule doesn't handle tag mismatch.
   # However, for purposes of gabc->lilypond convertor
   # such an issue may be safely ignored.
+  #TODO FIX THIS RULE
   rule formatted_characters
     "<" formatting_tag ">"
     ( regular_word_character / special_word_character / inline_whitespace / formatted_characters / parentheses )+
@@ -146,7 +149,7 @@ grammar Gabc
   end
 
   rule note
-    initio_debilis? note_pitch shape_modifiers? rhythmic_sign* accent?
+    initio_debilis note_pitch shape_modifiers rhythmic_signs accents
     <NoteNode>
   end
 
@@ -164,11 +167,15 @@ grammar Gabc
   end
 
   rule initio_debilis
-    "-"
+    "-"?
   end
 
   rule shape_modifiers
     ( [oOVwWqR] / "v"+ / "s"+ / ([r] "0"? ![1-5]) )? [~<>]?
+  end
+  
+  rule rhythmic_signs
+    rhythmic_sign*
   end
 
   rule rhythmic_sign
@@ -181,6 +188,10 @@ grammar Gabc
 
   rule episema_modifiers
     [0-5] ..3
+  end
+  
+  rule accents
+    accent?
   end
 
   rule accent
